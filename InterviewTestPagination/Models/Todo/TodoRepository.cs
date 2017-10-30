@@ -41,13 +41,16 @@ namespace InterviewTestPagination.Models.Todo {
                 .Skip(skipAmount)
                 .Take(pageSize);
 
-            var orderByExpression = GetPropertyExpression<Todo>(orderBy);
-            if(ascending)
+            //projection = GetPropertyQuery<Todo>(projection.AsQueryable(), orderBy, ascending);
+
+            var propertyInfo = typeof(Todo).GetProperty(orderBy);
+            if (ascending)
             {
-                projection = projection.AsQueryable().OrderBy(orderByExpression);
-            } else
+                projection = projection.OrderBy(x => propertyInfo.GetValue(x, null));
+            }
+            else
             {
-                projection = projection.AsQueryable().OrderByDescending(orderByExpression);
+                projection = projection.AsQueryable().OrderByDescending(x => propertyInfo.GetValue(x, null));
             }
 
             var totalNumberOfRecords = DataSource.Values.Count;

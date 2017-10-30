@@ -27,7 +27,8 @@
         function controller($scope, $http) { // example controller creating the scope bindings
             $scope.todos = [];
             // example of xhr call to the server's 'RESTful' api
-            $http.get("api/Todo/Todos").then(response => $scope.todos = response.data);
+            $http.get("api/Todo/Todos").then(response => $scope.todos = response.data.results);
+
         }
 
         function link(scope, element, attrs) { }

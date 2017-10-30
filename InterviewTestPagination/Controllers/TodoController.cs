@@ -19,6 +19,13 @@ namespace InterviewTestPagination.Models {
         // TODO: [discussion] return DTO models to front-end instead of Domain Models - to no explicit the domain model, but keep a consitent contract between API and front-end. In this architecture front-end and server-side are on the same project, separate them into two different projects would justify the creation of more DTOs.
         [HttpGet]
         public TodoPaginated Todos(int? page = 1, int pageSize = 20, string orderBy = "", bool ascending = true) {
+
+            if (string.IsNullOrWhiteSpace(orderBy))
+            {
+                orderBy = "CreatedDate";
+                ascending = false;
+            }
+         
             return _todoService.ListPaginated(page.Value, pageSize, orderBy, ascending);
         }
 

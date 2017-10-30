@@ -9,16 +9,17 @@ namespace InterviewTestPagination.Models.Todo
 {
     public abstract class RepositoryBase
     {
-        public static Expression<Func<T, string>> GetPropertyExpression<T>(string propertyName)
+        public static IQueryable<T> GetPropertyQuery<T>(IQueryable<T> source, string propertyName, bool ascending)
         {
-            if (typeof(T).GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) == null)
-            {
-                return null;
-            }
-
-            var paramterExpression = Expression.Parameter(typeof(T));
-
-            return (Expression<Func<T, string>>)Expression.Lambda(Expression.PropertyOrField(paramterExpression, propertyName), paramterExpression);
+            var root = Expression.Parameter(typeof(T), "x");
+            var member = propertyName.Split('.').Aggregate((Expression)root, Expression.PropertyOrField);
+            var selector = Expression.Lambda(member, root);
+            var method = ascending ? "OrderBy" : "OrderByDescending";
+            var types = new[] { typeof(T), member.Type };
+            var mce = Expression.Call(typeof(Queryable), method, types,
+                source.Expression, Expression.Quote(selector));
+            return source.Provider.CreateQuery<T>(mce);
         }
+
     }
 }
