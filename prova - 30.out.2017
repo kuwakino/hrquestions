@@ -1,4 +1,6 @@
-15h10 - 16h - Project Setup
+A) Worklog:
+
+30/10/2017 15h10 - 16h - Project Setup
 1) git fork;
 2) git clone;
 3) Build sln;
@@ -6,23 +8,23 @@
 5) Readme.md analysis;
 6) Code analysis;
 
-16h - 18h30 - Server-side
+30/10/2017 16h - 18h30 - Server-side
 1) Solution design;
 2) Options analysis for querying;
 3) Implementation - repository, service, controller;
 4) Tests and corrections - generic OrderBy;
 5) Tests and corrections - load itens encapsulated;
 
-21h30 - 23h Front-end
+30/10/2017 21h30 - 23h Front-end
 1) Tests API via PostMan;
 2) Implementation - API call, load values from API;
 
-8h30 - 13h00 Front-end;
+31/10/2017 8h30 - 13h00 Front-end;
 1) Implementation - navigation on pages;
 2) Implementation - order by column selected; ascending/descending ordering;]
 3) Tests and corrections;
 
-Discussions:
+B) Discussions:
 1. Refactoring to separate projects: front-end and server-side;
 	a) server-side as a microservice;
 2. Refactoring layers: closer to DDD principles;
