@@ -12,7 +12,7 @@ namespace InterviewTestPagination.Models.Todo {
     /// (e.g. dont create new model instances when executing a search 'query', etc).
     /// TL;DR: from this point on Database-like operations can be mocked.
     /// </summary>
-    public class TodoRepository : RepositoryBase, IModelRepository<Todo>
+    public class TodoRepository : IModelRepository<Todo>
     {
 
         /// <summary>
@@ -41,8 +41,6 @@ namespace InterviewTestPagination.Models.Todo {
                 .Skip(skipAmount)
                 .Take(pageSize);
 
-            //projection = GetPropertyQuery<Todo>(projection.AsQueryable(), orderBy, ascending);
-
             var propertyInfo = typeof(Todo).GetProperty(orderBy);
             if (ascending)
             {
@@ -50,7 +48,7 @@ namespace InterviewTestPagination.Models.Todo {
             }
             else
             {
-                projection = projection.AsQueryable().OrderByDescending(x => propertyInfo.GetValue(x, null));
+                projection = projection.OrderByDescending(x => propertyInfo.GetValue(x, null));
             }
 
             var totalNumberOfRecords = DataSource.Values.Count;

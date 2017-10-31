@@ -1,4 +1,5 @@
 ﻿<!-- table of contents -->
+<p>Ordered by Created Date by default.</p>
 <table>
     <!-- table:header -->
     <tr>
@@ -35,7 +36,7 @@
     - Dont worry about styling (looking pretty, centralized, etc) it just has to show that the app is still active while the request is being made
 
     -->
-    <tr ng-repeat="todo in todos track by $index">
+    <tr ng-repeat="todo in pageData.results track by $index">
         <td>{{todo.id}}</td>
         <td>{{todo.task}}</td>
         <td>{{todo.createdDate | date:'MM/dd/yyyy' }}</td>
@@ -43,4 +44,4 @@
 </table>
 
 <!-- pagination component -->
-<pagination></pagination>
+<pagination page-data="pageData" load-page="loadPage"></pagination>

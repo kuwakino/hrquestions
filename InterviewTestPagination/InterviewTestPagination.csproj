@@ -115,7 +115,6 @@
     </Compile>
     <Compile Include="Models\IModelRepository.cs" />
     <Compile Include="Models\IModelService.cs" />
-    <Compile Include="Models\Todo\RepositoryBase.cs" />
     <Compile Include="Models\Todo\Todo.cs" />
     <Compile Include="Models\Todo\TodoRepository.cs" />
     <Compile Include="Models\Todo\TodoService.cs" />
