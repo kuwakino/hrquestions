@@ -9,10 +9,6 @@
     /**
      * Directive definition function of 'todoPaginatedList'.
      * 
-     * TODO: correctly parametrize scope (inherited? isolated? which properties?)
-     * TODO: create appropriate functions (link? controller?) and scope bindings
-     * TODO: make appropriate general directive configuration (support transclusion? replace content? EAC?)
-     * 
      * @returns {} directive definition object
      */
     function todoPaginatedList() {
@@ -27,14 +23,16 @@
         function controller($scope, $http) { // example controller creating the scope bindings
 
             $scope.pageData = {};
-            // example of xhr call to the server's 'RESTful' api
             $http.get("api/Todo/Todos").then(response => $scope.pageData = response.data);
+
+            $scope.orderByField = "CreatedDate";
+            $scope.ascendingSort = false;
 
             //TODO: [discussion] fucntion loadPage() on $scope over the pagination directive to keep paginantion flexible to any model.
             $scope.loadPage = function (page, pageSize, orderBy, ascending) {
                 $http.get("api/Todo/Todos" + "?page=" + page + "&pageSize=" + pageSize + "&orderBy=" + orderBy + "&ascending=" + ascending).then(response => $scope.pageData = response.data);
             };
-
+            
         }
 
         function link(scope, element, attrs) { }
@@ -45,11 +43,6 @@
     /**
      * Directive definition function of 'pagination' directive.
      * 
-     * TODO: make it a reusable component (i.e. usable by any list of objects not just the Models.Todo model)
-     * TODO: correctly parametrize scope (inherited? isolated? which properties?)
-     * TODO: create appropriate functions (link? controller?) and scope bindings
-     * TODO: make appropriate general directive configuration (support transclusion? replace content? EAC?)
-     * 
      * @returns {} directive definition object
      */
     function pagination() {
@@ -59,7 +52,9 @@
             scope: {
                 paginated: '=pageData',
                 loadPage: '=loadPage',
-            }, // example empty isolate scope
+                orderByField: '=orderByField',
+                ascendingSort: '=ascendingSort'
+            }, 
             controller: ["$scope", controller],
             link: link
         };
@@ -79,7 +74,6 @@
 
             if (!$scope.currentPage || $scope.currentPage <= 0) {
                 $scope.currentPage = 1;
-                $scope.currentPageManual = 1;
             }
 
             if (!$scope.selectedPageSize) {
@@ -91,7 +85,7 @@
                 if ($scope.selectedPageSize == "all")
                     $scope.selectedPageSize = $scope.paginated.totalNumberOfRecords;
 
-                $scope.loadPage(pageNo, $scope.selectedPageSize, "", 0);
+                $scope.loadPage(pageNo, $scope.selectedPageSize, $scope.orderByField, $scope.ascendingSort);
 
                 //TODO: DRY code - prevent duplicated calls;
                 if ($scope.currentPage != pageNo)
@@ -124,7 +118,9 @@
                 $scope.goToPage($scope.currentPage);
             });
 
-           
+            $scope.$watch("ascendingSort", function () {
+                $scope.goToPage($scope.currentPage);
+            });
         }
 
         return directive;
