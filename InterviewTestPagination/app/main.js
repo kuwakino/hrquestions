@@ -30,6 +30,7 @@
             // example of xhr call to the server's 'RESTful' api
             $http.get("api/Todo/Todos").then(response => $scope.pageData = response.data);
 
+            //TODO: [discussion] fucntion loadPage() on $scope over the pagination directive to keep paginantion flexible to any model.
             $scope.loadPage = function (page, pageSize, orderBy, ascending) {
                 $http.get("api/Todo/Todos" + "?page=" + page + "&pageSize=" + pageSize + "&orderBy=" + orderBy + "&ascending=" + ascending).then(response => $scope.pageData = response.data);
             };
@@ -65,9 +66,7 @@
 
         function controller($scope) {
         
-            //$scope.$watch("currentPage", function (newValue, oldValue) {
-            //    $scope.currentPageManual = newValue + 1;
-            //});
+
             
             //$scope.$watch("currentPageManual", function (newValue, oldValue) {
             //    $scope.currentPage = newValue - 1;
@@ -88,37 +87,44 @@
             }
 
             $scope.goToPage = function (pageNo) {
+
+                if ($scope.selectedPageSize == "all")
+                    $scope.selectedPageSize = $scope.paginated.totalNumberOfRecords;
+
                 $scope.loadPage(pageNo, $scope.selectedPageSize, "", 0);
+
+                //TODO: DRY code - prevent duplicated calls;
+                if ($scope.currentPage != pageNo)
+                    $scope.currentPage = pageNo;
             }
-            //if (!scope.currentPage || scope.currentPage <= 0) {
-            //    scope.currentPage = 1;
-            //}
 
-            //if (!scope.pSize) {
-            //    scope.pageSize = 20;
+            $scope.goToNextPage = function () {
 
-            //}
+                var nextPage = $scope.currentPage + 1;
+                if (nextPage > $scope.paginated.totalNumberOfPages)
+                    nextPage = $scope.paginated.totalNumberOfPages;
 
-            //if (!scope.totalPage) {
-            //    scope.totalPage = scope.todos.length - (scope.todos.length % scope.pSize);
-            //}
+                $scope.currentPage = nextPage;
+            }
 
-            //scope.first = function () {
-            //    $scope.loadPage(1, scope.pageSize);
-            //}
+            $scope.goToPreviousPage = function () {
 
-            //scope.goto = function (pageNo) {
-            //    $scope.loadPage(pageNo, scope.pageSize);
-            //}
+                var previousPage = $scope.currentPage - 1;
+                if (previousPage < 0)
+                    previousPage = 1;
 
-            //scope.last = function () {
-            //    $scope.loadPage(scope.totalPage, scope.pageSize);
-            //}
+                $scope.currentPage = previousPage;
+            }
 
-            //scope.updateSize = function () {
-            //    if (scope.pageSize == 'all')
-            //        scope.pageSize = scope.todos.length;
-            //}
+            $scope.$watch("currentPage", function (newValue, oldValue) {                
+                $scope.goToPage(newValue);
+            });
+
+            $scope.$watch("selectedPageSize", function (newValue, oldValue) {
+                $scope.goToPage($scope.currentPage);
+            });
+
+           
         }
 
         return directive;
