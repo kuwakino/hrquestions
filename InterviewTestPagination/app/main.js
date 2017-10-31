@@ -60,13 +60,6 @@
         };
 
         function controller($scope) {
-        
-
-            
-            //$scope.$watch("currentPageManual", function (newValue, oldValue) {
-            //    $scope.currentPage = newValue - 1;
-            //});
-
             
         }
 
@@ -110,16 +103,22 @@
                 $scope.currentPage = previousPage;
             }
 
-            $scope.$watch("currentPage", function (newValue, oldValue) {                
-                $scope.goToPage(newValue);
+            $scope.$watch("currentPage", function (newValue, oldValue) {
+                //TODO: DRY code - prevent duplicated calls;
+                if (newValue != oldValue)
+                    $scope.goToPage(newValue);
             });
 
             $scope.$watch("selectedPageSize", function (newValue, oldValue) {
-                $scope.goToPage($scope.currentPage);
+                //TODO: DRY code - prevent duplicated calls;
+                if (newValue != oldValue)
+                    $scope.goToPage($scope.currentPage);
             });
 
-            $scope.$watch("ascendingSort", function () {
-                $scope.goToPage($scope.currentPage);
+            $scope.$watch("ascendingSort", function (newValue, oldValue) {
+                //TODO: DRY code - prevent duplicated calls;
+                if (newValue != oldValue)
+                    $scope.goToPage($scope.currentPage);
             });
         }
 

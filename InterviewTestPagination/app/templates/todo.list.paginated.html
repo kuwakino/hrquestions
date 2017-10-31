@@ -22,15 +22,15 @@
             . the indicators don't need to look pretty, they just have to be distinct (ascending from descending) and communicate well what they're doing
 
         -->
-        <th><a href="#" ng-click="orderByField='Id'; ">
+        <th><a href="#" ng-click="orderByField='Id'; ascendingSort = !ascendingSort">
                 Id <span ng-show="ascendingSort" style="font-family: 'Courier New'; font-size: 9px;">v</span><span ng-show="!ascendingSort" style="font-family: 'Courier New'; font-size: 11px;">^</span>
             </a>
         </th>
-        <th> <a href="#" ng-click="orderByField='Task'; ">
+        <th> <a href="#" ng-click="orderByField='Task'; ascendingSort = !ascendingSort">
                  Task <span ng-show="ascendingSort" style="font-family: 'Courier New'; font-size: 9px;">v</span><span ng-show="!ascendingSort" style="font-family: 'Courier New'; font-size: 11px;">^</span>
             </a>
         </th>
-        <th><a href="#" ng-click="orderByField='CreatedDate'; ">
+        <th><a href="#" ng-click="orderByField='CreatedDate'; ascendingSort = !ascendingSort">
                 Created Date <span ng-show="ascendingSort" style="font-family: 'Courier New'; font-size: 9px;">v</span><span ng-show="!ascendingSort" style="font-family: 'Courier New'; font-size: 11px;">^</span>
             </a>
         </th>
